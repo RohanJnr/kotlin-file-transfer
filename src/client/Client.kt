@@ -22,6 +22,10 @@ class Client(val host: String, val port: Int) {
         val response = reader.readLine()
         println("Received from server: $response")
         client.close()
+
+        val stream = client.getOutputStream()
+
+
     }
 
     fun parseData(raw: String): Map<String, String> {
@@ -71,6 +75,29 @@ class Client(val host: String, val port: Int) {
 
     }
 
+    fun test() {
+        val outputStream = client.getOutputStream()
+        val file = File("/Users/alletirohanr/Downloads/test.jpg")
+
+        val stream = file.inputStream()
+        while (true) {
+            val byteArray = ByteArray(20000)
+            val readBytes = stream.read(byteArray)
+
+
+
+            println("Read $readBytes from the file.")
+
+            outputStream.write(byteArray)
+            outputStream.flush()
+
+            if (readBytes == -1) {
+                break
+            }
+        }
+
+    }
+
 //    val outputStream = client.getOutputStream()
 }
 
@@ -79,5 +106,7 @@ fun main() {
     val client = Client("127.0.0.1", 9999)
 
 //    client.sendDummyData()
-    client.startFileSend()
+//    client.startFileSend()
+
+    client.test()
 }
